@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.sound.sampled.AudioInputStream;
@@ -13,12 +14,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import examples.FileHelper;
+
 public class Hangman extends KeyAdapter {
 
 	Stack<String> puzzles = new Stack<String>();
 	ArrayList<JLabel> boxes = new ArrayList<JLabel>();
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
+	private int characterCount;
+	List<String> puzzleList = new ArrayList<>();
 
 	public static void main(String[] args) {
 		Hangman hangman = new Hangman();
@@ -26,10 +31,18 @@ public class Hangman extends KeyAdapter {
 		hangman.createUI();
 	}
 
+	public List<String> loadPuzzles(String pathname) {
+		return FileHelper.loadFileContentsIntoArrayList(pathname);
+	}
+
 	private void addPuzzles() {
-		puzzles.push("defenestrate");
-		puzzles.push("fancypants");
-		puzzles.push("elements");
+		puzzleList = loadPuzzles("resource/words.txt");
+		for (String string : puzzleList) {
+			puzzles.push(string);
+		}
+//		puzzles.push("defenestrate");
+//		puzzles.push("fancypants");
+//		puzzles.push("elements");
 	}
 
 	JPanel panel = new JPanel();
@@ -54,12 +67,14 @@ public class Hangman extends KeyAdapter {
 		puzzle = puzzles.pop();
 		System.out.println("puzzle is now " + puzzle);
 		createBoxes();
+		characterCount = 0;
 	}
 
 	public void keyTyped(KeyEvent arg0) {
 		System.out.println(arg0.getKeyChar());
 		updateBoxesWithUserInput(arg0.getKeyChar());
-		if (lives == 0) {
+		if (lives == 0 || characterCount == puzzle.length()) {
+		// if (lives == 0) {
 			playDeathKnell();
 			loadNextPuzzle();
 		}
@@ -70,11 +85,11 @@ public class Hangman extends KeyAdapter {
 		for (int i = 0; i < puzzle.length(); i++) {
 			if (puzzle.charAt(i) == keyChar) {
 				boxes.get(i).setText("" + keyChar);
+				characterCount++;
 				gotOne = true;
 			}
 		}
-		if (!gotOne)
-			livesLabel.setText("" + --lives);
+		if (!gotOne) livesLabel.setText("" + --lives);
 	}
 
 	void createBoxes() {
@@ -91,10 +106,11 @@ public class Hangman extends KeyAdapter {
 		}
 		boxes.clear();
 	}
-	
+
 	public void playDeathKnell() {
 		try {
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("resource/funeral-march.wav"));
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
+					new File("resource/funeral-march.wav"));
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			clip.start();
@@ -105,7 +121,3 @@ public class Hangman extends KeyAdapter {
 	}
 
 }
-
-
-
-
