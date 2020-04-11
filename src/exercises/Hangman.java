@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -65,7 +64,7 @@ public class Hangman extends KeyAdapter {
 		removeBoxes();
 		lives = 9;
 		livesLabel.setText("" + lives);
-		randomNumber = randomNumberGenerator.nextInt(puzzles.size()) + 1;
+		randomNumber = randomNumberGenerator.nextInt(puzzles.size() - 1) + 1;
 		puzzle = puzzles.get(randomNumber);
 		System.out.println("puzzle is now " + puzzle);
 		createBoxes();
@@ -76,7 +75,6 @@ public class Hangman extends KeyAdapter {
 		System.out.println(arg0.getKeyChar());
 		updateBoxesWithUserInput(arg0.getKeyChar());
 		if (lives == 0 || characterCount == puzzle.length()) {
-			// if (lives == 0) {
 			playDeathKnell();
 			loadNextPuzzle();
 		}
@@ -85,8 +83,12 @@ public class Hangman extends KeyAdapter {
 	private void updateBoxesWithUserInput(char keyChar) {
 		boolean gotOne = false;
 		for (int i = 0; i < puzzle.length(); i++) {
-			if (puzzle.charAt(i) == keyChar) {
-				boxes.get(i).setText("" + keyChar);
+			// In the following conditional, I modified the original
+			// statement so that the case (upper or lower) would not
+			// be a factor.
+			if (Character.toLowerCase(puzzle.charAt(i)) == Character
+					.toLowerCase(keyChar)) {
+				boxes.get(i).setText("" + puzzle.charAt(i));
 				characterCount++;
 				gotOne = true;
 			}
