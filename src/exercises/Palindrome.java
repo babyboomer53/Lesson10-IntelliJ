@@ -25,9 +25,6 @@ public class Palindrome {
 	public boolean isAPalindrome(String string) {
 		String candidate = new String(string)
 				.replaceAll("[ \t,.:;?!][ \t,.:;?!]*", "").toLowerCase();
-		// I'm a little rusty, but I thought I'd try my hand at
-		// regular expressions to remove punctuation and extraneous
-		// whitespace
 		for (int forward = 0, backward = candidate.length()
 				- 1; forward <= backward; forward++, backward--) {
 			if (candidate.charAt(forward) != candidate.charAt(backward)) {
