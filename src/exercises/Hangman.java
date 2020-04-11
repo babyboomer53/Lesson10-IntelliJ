@@ -16,14 +16,18 @@ import javax.swing.JPanel;
 
 import examples.FileHelper;
 
+import java.security.SecureRandom;
+
 public class Hangman extends KeyAdapter {
 
-	Stack<String> puzzles = new Stack<String>();
+	ArrayList<String> puzzles = new ArrayList<String>();
 	ArrayList<JLabel> boxes = new ArrayList<JLabel>();
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
 	private int characterCount;
 	List<String> puzzleList = new ArrayList<>();
+	SecureRandom randomNumberGenerator = new SecureRandom();
+	int randomNumber;
 
 	public static void main(String[] args) {
 		Hangman hangman = new Hangman();
@@ -38,11 +42,8 @@ public class Hangman extends KeyAdapter {
 	private void addPuzzles() {
 		puzzleList = loadPuzzles("resource/words.txt");
 		for (String string : puzzleList) {
-			puzzles.push(string);
+			puzzles.add(string);
 		}
-//		puzzles.push("defenestrate");
-//		puzzles.push("fancypants");
-//		puzzles.push("elements");
 	}
 
 	JPanel panel = new JPanel();
@@ -64,7 +65,8 @@ public class Hangman extends KeyAdapter {
 		removeBoxes();
 		lives = 9;
 		livesLabel.setText("" + lives);
-		puzzle = puzzles.pop();
+		randomNumber = randomNumberGenerator.nextInt(puzzles.size()) + 1;
+		puzzle = puzzles.get(randomNumber);
 		System.out.println("puzzle is now " + puzzle);
 		createBoxes();
 		characterCount = 0;
@@ -74,7 +76,7 @@ public class Hangman extends KeyAdapter {
 		System.out.println(arg0.getKeyChar());
 		updateBoxesWithUserInput(arg0.getKeyChar());
 		if (lives == 0 || characterCount == puzzle.length()) {
-		// if (lives == 0) {
+			// if (lives == 0) {
 			playDeathKnell();
 			loadNextPuzzle();
 		}
@@ -89,7 +91,8 @@ public class Hangman extends KeyAdapter {
 				gotOne = true;
 			}
 		}
-		if (!gotOne) livesLabel.setText("" + --lives);
+		if (!gotOne)
+			livesLabel.setText("" + --lives);
 	}
 
 	void createBoxes() {
