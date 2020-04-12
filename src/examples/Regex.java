@@ -1,34 +1,30 @@
 package examples;
 
-import java.util.function.BooleanSupplier;
+// import java.util.function.BooleanSupplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Regex {
 	
+	private String emailRegex = "";
+	
 	public static void main(String[] args) {
-		// Pattern
-		Pattern emailPattern = Pattern.compile("[.]*");
-		Pattern phonePattern = Pattern.compile("[^1-9,0]{,3}[.-]*[0-9]{,3}[.-]*[0-9]{,4}");
-		
-		// Matcher
-		Matcher matcher = pattern.matcher("joonspoon1");
-		
-		System.out.println(matcher.find());
-		
+
 		// Regex reference guide: https://cs.lmu.edu/~ray/notes/regex/
 		
 		// Exercise: validate email addresses and phone numbers
 	}
 
-	public boolean theEmailIsValid(String string) {
-		// TODO Auto-generated method stub
-		return true;
+	public boolean theEmailIsValid(String emailAddress) {
+		Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+		Matcher matcher = emailPattern.matcher(emailAddress);
+		return matcher.find();
 	}
 
-	public boolean thePhoneNumberIsValid(String string) {
-		// TODO Auto-generated method stub
-		return true;
+	public boolean thePhoneNumberIsValid(String phoneNumber) {
+		Pattern phonePattern = Pattern.compile("^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$");
+		Matcher matcher = phonePattern.matcher(phoneNumber);
+		return matcher.find();
 	}
 	
 

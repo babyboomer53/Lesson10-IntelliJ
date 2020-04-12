@@ -13,18 +13,13 @@ class RegexTest {
 	Regex regularExpressionParser = new Regex ();
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testForValidEmailAddress () {
-		assertTrue(regularExpressionParser.theEmailIsValid ("mary.abercrombie@gmail.com"));
+		assertTrue(regularExpressionParser.theEmailIsValid ("JohnDoe@gmail.com"));
 	}
 	
 	@Test
 	void testForValidPhoneNumber () {
-		assertTrue(regularExpressionParser.thePhoneNumberIsValid ("555-123-4567"));
+		assertTrue(regularExpressionParser.thePhoneNumberIsValid ("(555) 123-4567"));
 	}
 
 }
