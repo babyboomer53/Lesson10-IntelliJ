@@ -93,9 +93,7 @@ public class Hangman extends KeyAdapter {
 
 	private void addPuzzles() {
 		puzzleList = loadPuzzles("resource/words.txt");
-		for (String string : puzzleList) {
-			puzzles.add(string);
-		}
+		puzzles.addAll(puzzleList);
 	}
 
 	JPanel panel = new JPanel();
