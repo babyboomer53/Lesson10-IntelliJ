@@ -17,9 +17,62 @@ import examples.FileHelper;
 
 import java.security.SecureRandom;
 
+/*
+*
+* This program implements a rendition of the Hangman game in which participants
+* try  to guess  a  word or  phrase  for which  they know  only  the number  of
+* characters  in that  phrase. It is the premise of the popular television game
+* show, "Wheel of Fortune."
+*
+* In  this version  of Hangman, users are  presented with a window in which the
+* characters  in the  phrase are represented by underscores. Each time the user
+* enters  a character  contained in the phrase, the positions of that character
+* in the phrase are revealed by replacing the corresponding underscore with the
+* character.  If the  user enters a character that occurs multiple times in the
+* phrase, all positions will be revealed.
+*
+* If  the  user guesses incorrectly  more than nine  times before the puzzle is
+* solved,  they lose the game. A number is displayed in the window representing
+* the  number  of failures left. The  number starts at nine, and is decremented
+* each time the user guesses incorrectly.
+*
+* As  originally submitted,  the  program implemented  the basic  functionality
+* described above. However, the original author was seeking a few enhancements.
+* Specifically,  the program would not load a new puzzle unless the user failed
+* to  solve  the previous  one. Ideally  the program should  load a new puzzle,
+* whether the user wins or loses.
+*
+* The data used to populate the program's inventory of puzzles was hardcoded in
+* the  class, resulting  in an implementation that was inflexible and difficult
+* to scale.
+*
+* I  modified the program so that a new puzzle would be loaded whether the user
+* won  or lost. Also,  I modified the program so that the data used to populate
+* the  puzzle stack  is obtained dynamically (i.e., read at runtime from a flat
+* file on disk).
+*
+* While testing the new process for managing the puzzle data, it occurred to me
+* that  the data structure (i.e., a stack) in which the puzzles were stored was
+* too  restrictive. The  records are sorted in inverse-alphabetical order. With
+* tens of thousands of records, one would have to play hundreds of games before
+* encountering  a phrase beginning with anything other than the letter Z. Being
+* able  to access  the  records randomly  would alleviate  the  problem. So,  I
+* switched  the  data structure containing the  puzzles from a Stack to a List,
+* and switched the access mode from sequential to random.
+*
+* I  noticed that when  comparing user input to the puzzle, the program was not
+* considering upper and lowercase versions of the same character as equivalent.
+* For  example,  if the  user entered  the letter  's' while  trying to solve a
+* puzzle  containing  the  word  "Stork", the  program  wouldn't  consider  the
+* lowercase  's' and the uppercase 'S' as equivalent. I modified the program so
+* that  this  comparison is  now case-insensitive. In  other words, a lowercase
+* letter and its uppercase counterpart are considered the same.
+*
+*/
+
 public class Hangman extends KeyAdapter {
 
-	ArrayList<String> puzzles = new ArrayList<String>();
+	ArrayList<String> puzzles = new ArrayList<String>();	//change from Stack to
 	ArrayList<JLabel> boxes = new ArrayList<JLabel>();
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
@@ -84,8 +137,8 @@ public class Hangman extends KeyAdapter {
 		boolean gotOne = false;
 		for (int i = 0; i < puzzle.length(); i++) {
 			// In the following conditional, I modified the original
-			// statement so that the case (upper or lower) would not
-			// be a factor.
+			// statement so that the comparison would not be case-
+			// sensitive.
 			if (Character.toLowerCase(puzzle.charAt(i)) == Character
 					.toLowerCase(keyChar)) {
 				boxes.get(i).setText("" + puzzle.charAt(i));
