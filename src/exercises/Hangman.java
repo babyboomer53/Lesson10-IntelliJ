@@ -37,7 +37,7 @@ import java.security.SecureRandom;
 * each time the user guesses incorrectly.
 *
 * As  originally submitted,  the  program implemented  the basic  functionality
-* described above. However, the original author was seeking a few enhancements.
+* described above. However, the original author recommended a few enhancements.
 * Specifically,  the program would not load a new puzzle unless the user failed
 * to  solve  the previous  one. Ideally  the program should  load a new puzzle,
 * whether the user wins or loses.
@@ -72,7 +72,7 @@ import java.security.SecureRandom;
 
 public class Hangman extends KeyAdapter {
 
-	ArrayList<String> puzzles = new ArrayList<String>();	//change from Stack to
+	ArrayList<String> puzzles = new ArrayList<String>();
 	ArrayList<JLabel> boxes = new ArrayList<JLabel>();
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
