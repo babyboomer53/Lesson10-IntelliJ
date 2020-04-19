@@ -1,6 +1,7 @@
 package exercises;
 
 import java.awt.event.KeyAdapter;
+
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import javax.swing.JPanel;
 import examples.FileHelper;
 
 import java.security.SecureRandom;
+
+import java.util.regex.*;
 
 /*
 *
@@ -92,7 +95,7 @@ public class Hangman extends KeyAdapter {
 	}
 
 	private void addPuzzles() {
-		puzzleList = loadPuzzles("resource/words.txt");
+		puzzleList = loadPuzzles("resource/specialcharacters.txt");
 		puzzles.addAll(puzzleList);
 	}
 
@@ -104,19 +107,36 @@ public class Hangman extends KeyAdapter {
 		JFrame frame = new JFrame("June's Hangman");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel.add(livesLabel);
-		loadNextPuzzle();
+		while (true) {
+			try {
+				loadNextPuzzle();
+			} catch (InvalidCharactersInStringException exception) {
+				System.err.println(exception.getMessage());
+				continue;
+			}
+			break;
+		}
 		frame.add(panel);
 		frame.setVisible(true);
 		frame.pack();
 		frame.addKeyListener(this);
 	}
 
-	private void loadNextPuzzle() {
+	public boolean thePuzzleContainsSpecialCharacters(String string) {
+		Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9 ]");
+		Matcher matcher = specialCharacterPattern.matcher(string);
+		return matcher.find();
+	}
+
+	private void loadNextPuzzle() throws InvalidCharactersInStringException {
 		removeBoxes();
 		lives = 9;
 		livesLabel.setText("" + lives);
 		randomNumber = randomNumberGenerator.nextInt(puzzles.size() - 1) + 1;
 		puzzle = puzzles.get(randomNumber);
+		if (thePuzzleContainsSpecialCharacters(puzzle))
+			throw new InvalidCharactersInStringException(String.format(
+					"The puzzle (%s) contains special characters.", puzzle));
 		System.out.println("puzzle is now " + puzzle);
 		createBoxes();
 		characterCount = 0;
@@ -127,7 +147,15 @@ public class Hangman extends KeyAdapter {
 		updateBoxesWithUserInput(arg0.getKeyChar());
 		if (lives == 0 || characterCount == puzzle.length()) {
 			playDeathKnell();
-			loadNextPuzzle();
+			while (true) {
+				try {
+					loadNextPuzzle();
+				} catch (InvalidCharactersInStringException exception) {
+					System.err.println(exception.getMessage());
+					continue;
+				}
+				break;
+			}
 		}
 	}
 
@@ -176,4 +204,15 @@ public class Hangman extends KeyAdapter {
 		}
 	}
 
+} // End of class Hangman
+
+class InvalidCharactersInStringException extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	InvalidCharactersInStringException(String message) {
+		super(message);
+	}
 }
