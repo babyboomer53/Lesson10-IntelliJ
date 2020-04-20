@@ -10,7 +10,7 @@ public class HangmanTest {
 
 	@Test
 	void testTheStringParser() {
-		assertTrue(hangman.thePuzzleContainsSpecialCharacters("less<than"));
-		assertFalse(hangman.thePuzzleContainsSpecialCharacters("June Clarke"));
+		assertTrue(hangman.thePuzzleContainsSpecialCharacters("June Clarke"));
+		assertFalse(hangman.thePuzzleContainsSpecialCharacters("June"));
 	}
 }

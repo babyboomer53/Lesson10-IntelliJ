@@ -123,7 +123,7 @@ public class Hangman extends KeyAdapter {
 	}
 
 	public boolean thePuzzleContainsSpecialCharacters(String string) {
-		Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9 ]");
+		Pattern specialCharacterPattern = Pattern.compile("[^a-zA-Z0-9]");
 		Matcher matcher = specialCharacterPattern.matcher(string);
 		return matcher.find();
 	}

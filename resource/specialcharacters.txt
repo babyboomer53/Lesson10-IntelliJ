@@ -1,5 +1,5 @@
 Adrienne
-Andrea Miller
+Andrea
 Annie
 ast*risk
 Barack Obama
@@ -20,7 +20,6 @@ June Clarke
 Kamilah
 Kevin
 less<than
-lower
 Maria
 Matthew
 Meghan
@@ -30,7 +29,7 @@ quizzically?
 Roland
 semi;
 Sharon
+snack|
 Spencer
-Stella Stemple
-Upper
+Stella
 Wendy
