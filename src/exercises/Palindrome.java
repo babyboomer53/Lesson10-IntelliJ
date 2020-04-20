@@ -2,7 +2,6 @@ package exercises;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 import examples.FileHelper;
 
@@ -25,9 +24,9 @@ public class Palindrome {
 	public boolean isAPalindrome(String string) {
 		String candidate = new String(string)
 				.replaceAll("[ \t,.:;?!][ \t,.:;?!]*", "").toLowerCase();
-		for (int forward = 0, backward = candidate.length()
-				- 1; forward <= backward; forward++, backward--) {
-			if (candidate.charAt(forward) != candidate.charAt(backward)) {
+		for (int front = 0, back = candidate.length()
+				- 1; front <= back; front++, back--) {
+			if (candidate.charAt(front) != candidate.charAt(back)) {
 				return false;
 			}
 		}
